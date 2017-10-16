@@ -41,9 +41,5 @@ typedef struct sword
 // Constant data
 extern const u8 META_PLAYERONE[];
 
-// Module functions
-void __fastcall__ players_init   (PLAYER_DATA *players, u8 i);
-void __fastcall__ players_update (PLAYER_DATA *players);
-void __fastcall__ players_draw   (PLAYER_DATA *players, u8 *oam_ptr);
 
 #endif
