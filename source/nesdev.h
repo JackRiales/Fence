@@ -16,7 +16,6 @@ typedef int16_t   s16;
 typedef uint16_t  u16;
 typedef int8_t    s8;
 typedef uint8_t   u8;
-typedef uintptr_t uptr;
 
 // 8-bit integer limits
 #define U16_MAX   65535
@@ -175,6 +174,20 @@ typedef uintptr_t uptr;
 // NESLIB Meta-sprite format
 #define METASPR_EOB 128
 
+// Some old C fixers
+#ifndef TRUE
+#define TRUE 1
+#endif
+
+#ifndef FALSE
+#define FALSE 0
+#endif
+
+#ifndef NULL
+#define NULL 0
+#endif
+
+
 // OAM sprite data
 // see http://wiki.nesdev.com/w/index.php/PPU_OAM
 // This one only supports a single, simple, 8x8 sprite
@@ -197,16 +210,14 @@ typedef struct metasprite
 
 // Function pointer types
 typedef void (*function)(void);
-typedef void (*draw_function)(u8*);
 
 // Defines a state that can be initialized, updated, and switched
 typedef struct gamestate
 {
-  function      nt_init;
-  function      init;
-  function      update;
-  draw_function draw;
-  struct gamestate *next;
+  function nt_init;
+  function init;
+  function update;
+  function draw;
 } gamestate_t;
 
 // Generic rectangle definition
@@ -216,8 +227,6 @@ typedef struct rect
   u8 y;
   u8 w;
   u8 h;
-  u8 max_x; /* x + width */
-  u8 max_y; /* y + height */
 } rect_t;
 
 // Used to represent numbers larger than 8-bit
@@ -233,14 +242,15 @@ void __fastcall__ flash (const u8 *normal_palette, const u8 *flash_palette);
 // Scrolls the screen randomly
 void __fastcall__ shake (s8 force);
 
+// Verbose versions of the draw methods that don't use the sprite structs
+void __fastcall__ spr     (u8 tile, u8 x, u8 y, u8 attr, u8 *oam_ptr);
+void __fastcall__ metaspr (const u8* tile_buffer, u8 x, u8 y, u8 *oam_ptr);
+
 // Draws a simple sprite and offsets the oam pointer
-void __fastcall__ spr (const sprite_t *sprite, u8 *oam_ptr);
+void __fastcall__ spr_s (const sprite_t *sprite, u8 *oam_ptr);
 
 // Draws a metasprite and offsets the oam pointer
-void __fastcall__ metaspr (const metasprite_t *metasprite, u8 *oam_ptr);
-
-// Moves a rectangle while maintaining max_x and max_y values
-void __fastcall__ move_rect (rect_t *rect, u8 x, u8 y);
+void __fastcall__ metaspr_s (const metasprite_t *metasprite, u8 *oam_ptr);
 
 // Determines if a point (x, y) is inside the given rect
 u8 __fastcall__ point_in_rect (const rect_t *rect, u8 x, u8 y);

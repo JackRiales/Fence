@@ -37,7 +37,17 @@ void __fastcall__ shake (s8 force)
 /*
     Draw functions
 */
-void __fastcall__ spr (const sprite_t *sprite, u8 *oam_ptr)
+void __fastcall__ spr (u8 tile, u8 x, u8 y, u8 attr, u8 *oam_ptr)
+{
+  *oam_ptr = oam_spr(x, y, tile, attr, *oam_ptr);
+}
+
+void __fastcall__ metaspr (const u8 * tile_buffer, u8 x, u8 y, u8 *oam_ptr)
+{
+  *oam_ptr = oam_meta_spr(x, y, *oam_ptr, tile_buffer);
+}
+
+void __fastcall__ spr_s (const sprite_t *sprite, u8 *oam_ptr)
 {
     *oam_ptr = oam_spr(sprite->x, 
                        sprite->y, 
@@ -46,7 +56,7 @@ void __fastcall__ spr (const sprite_t *sprite, u8 *oam_ptr)
                        *oam_ptr);
 }
 
-void __fastcall__ metaspr (const metasprite_t *metasprite, u8 *oam_ptr)
+void __fastcall__ metaspr_s (const metasprite_t *metasprite, u8 *oam_ptr)
 {
     *oam_ptr = oam_meta_spr(metasprite->x, 
                             metasprite->y, 
@@ -57,25 +67,28 @@ void __fastcall__ metaspr (const metasprite_t *metasprite, u8 *oam_ptr)
 /*
     Rectangle functions
 */
-void __fastcall__ move_rect (rect_t *rect, u8 x, u8 y)
-{
-  rect->x = x;
-  rect->y = y;
-  rect->max_x = rect->x + rect->w;
-  rect->max_y = rect->y + rect->h;
-}
+static u8 rect_max_x1, // Helps calculate collisions more easily
+          rect_max_x2, 
+          rect_max_y1, 
+          rect_max_y2;
 
 u8 __fastcall__ point_in_rect (const rect_t *rect, u8 x, u8 y)
 {
-  return (x > rect->x && y > rect->y && x < rect->max_x && y < rect->max_y);
+  rect_max_x1 = rect->x + rect->w;
+  rect_max_y1 = rect->y + rect->h;
+  return (x > rect->x && y > rect->y && x < rect_max_x1 && y < rect_max_y1);
 }
 
 u8 __fastcall__ rect_collides(const rect_t *first, const rect_t *second)
 {
-    return (first->x < second->max_x && 
-            first->max_x > second->x &&
-            first->y < second->max_y && 
-            first->max_y > second->y);
+  rect_max_x1 = first->x + first->w;
+  rect_max_y1 = first->y + first->h;
+  rect_max_x2 = second->x + second->w;
+  rect_max_y2 = second->y + second->h;
+  return (first->x < rect_max_x2 && 
+          rect_max_x1 > second->x &&
+          first->y < rect_max_y2 && 
+          rect_max_y1 > second->y);
 }
 
 /*

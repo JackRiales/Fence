@@ -14,14 +14,20 @@ u8 i;               /* Iterator */
 u8 j;               /* Iterator */
 u8 frame;           /* Frame counter */
 
+/* Main game state */
+gamestate_t state_main;
+gamestate_t state_title;
+gamestate_t state_battle;
+
 /* Input state */
 u8 pads [2];
 
 /* Current sprite oam offset */
 u8 oam_ptr;
 
-/* Player data */
-player_t players [NUM_PLAYERS];
+/* Player data (2, for 2-player game) */
+metasprite_t player_sprites[2];
+player_t     players [2];
 
 /* Brightness values */
 u8 bg_bright = 4;

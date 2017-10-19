@@ -29,15 +29,16 @@ void nt_init (void)
 /* Initialize game state here (post-ppu state) */
 void init (void)
 {
-	
+	player_init(&players[0], 0);
+	player_init(&players[1], 1);
 }
 
 /* Update game state */
 void update (void)
 {
 	// Input processing
-	pad[0] = pad_poll(0);
-	pad[1] = pad_poll(1);
+	pads[0] = pad_poll(0);
+	pads[1] = pad_poll(1);
 
 	// Flash the screen 
 	if (flash_time > 0)
@@ -65,7 +66,7 @@ void update (void)
 /* Uses the OAM to draw our sprites */
 void draw (void)
 {
-	players_draw(&player_data, &oam_ptr);
+	
 }
 
 void main (void)
