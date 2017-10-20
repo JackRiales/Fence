@@ -25,9 +25,9 @@ void __fastcall__ shake (s8 force)
 {
   static u8 scroll_x = 0;
   static u8 scroll_y = 0;
-  scroll_x = rand8() % force;
+  scroll_x = rand8() % force; // Noise motion
 	scroll_y = rand8() % force;
-	if (rand8() > 128)
+	if (rand8() > 128) // 50% chance of reversing direction
 		scroll_x *= -1;
 	if (rand8() > 128)
     scroll_y *= -1;

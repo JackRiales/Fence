@@ -17,11 +17,10 @@ const u8 META_PLAYERONE[] =
 	METASPR_EOB /* End of buffer */
 };
 
-void __fastcall__ player_init   (player_t *player, u8 id)
+void __fastcall__ player_init   (player_t *player)
 {
-    player->id = id;
-    player->x  = id ? (MAX_X - (MAX_X / 3)) : MAX_X / 3;
-    player->y  = 50; // some ground constant for the map
+    player->x  = 0;
+    player->y  = 0; // some ground constant for the map
     player->sprite = NULL;
     player->body.w = 8;
     player->body.h = PLAYER_HEIGHT;

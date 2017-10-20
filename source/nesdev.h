@@ -210,14 +210,15 @@ typedef struct metasprite
 
 // Function pointer types
 typedef void (*function)(void);
+typedef void (*func_u8ptr)(u8*);
 
 // Defines a state that can be initialized, updated, and switched
 typedef struct gamestate
 {
-  function nt_init;
-  function init;
-  function update;
-  function draw;
+  function   nt_init_func;
+  function   init_func;
+  function   update_func;
+  func_u8ptr draw_func;
 } gamestate_t;
 
 // Generic rectangle definition

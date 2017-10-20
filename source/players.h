@@ -21,11 +21,11 @@
 #define SWORDSTATE_CENTER 1<<6
 #define SWORDSTATE_DOWN   1<<7
 
+#define NUM_PLAYERS   2
 #define PLAYER_HEIGHT 16 // In pixels
 
 typedef struct player
 {
-    u8            id;
     u8            x;
     u8            y;
     u8            state;
@@ -37,10 +37,16 @@ typedef struct player
 // Constant data
 extern const u8 META_PLAYERONE[];
 
-void __fastcall__ player_init   (player_t *player, u8 id);
+// Initializes player data with default data
+void __fastcall__ player_init   (player_t *player);
 
+// Updates player state
 void __fastcall__ player_update (player_t *player);
 
+// Moves a player and keeps boxes consistent
+void __fastcall__ player_move   (player_t *player, s8 dx, s8 dy);
+
+// Draws the player assuming it's been assigned a sprite
 void __fastcall__ player_draw   (player_t *player, u8 *oam_ptr);
 
 #endif

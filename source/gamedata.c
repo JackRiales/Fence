@@ -26,8 +26,8 @@ u8 pads [2];
 u8 oam_ptr;
 
 /* Player data (2, for 2-player game) */
-metasprite_t player_sprites[2];
-player_t     players [2];
+metasprite_t player_sprites [NUM_PLAYERS];
+player_t     players        [NUM_PLAYERS];
 
 /* Brightness values */
 u8 bg_bright = 4;

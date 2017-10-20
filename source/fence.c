@@ -29,8 +29,13 @@ void nt_init (void)
 /* Initialize game state here (post-ppu state) */
 void init (void)
 {
-	player_init(&players[0], 0);
-	player_init(&players[1], 1);
+	// Setup player data
+	for (i = 0; i < NUM_PLAYERS; ++i)
+	{
+		player_sprites[i].index_buffer = (u8*) META_PLAYERONE;
+		player_init(&players[i]);
+		players[i].sprite = &player_sprites[i];
+	}
 }
 
 /* Update game state */
@@ -66,7 +71,8 @@ void update (void)
 /* Uses the OAM to draw our sprites */
 void draw (void)
 {
-	
+	player_draw(&players[0], &oam_ptr);
+	player_draw(&players[1], &oam_ptr);
 }
 
 void main (void)
